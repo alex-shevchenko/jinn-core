@@ -1,0 +1,20 @@
+{
+    "name": "jinn/jinn-core",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alex Shevchenko",
+            "email": "caezaris@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Jinn\\": "src/"
+        }
+    },
+    "require": {
+        "php" : ">=7.4",
+        "symfony/yaml": "^5.3"
+    }
+}
