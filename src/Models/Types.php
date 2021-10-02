@@ -3,17 +3,18 @@
 
 namespace Jinn\Models;
 
+use Doctrine\DBAL\Types\Types as DbalTypes;
 
 class Types
 {
-    public const STRING = 'string';
-    public const INT = 'integer';
-    public const BIGINT = 'bigint';
-    public const FLOAT = 'float';
-    public const TEXT = 'text';
-    public const BOOL = 'boolean';
-    public const DATE = 'date';
-    public const DATETIME = 'datetime';
+    public const STRING = DbalTypes::STRING;
+    public const INT = DbalTypes::INTEGER;
+    public const BIGINT = DbalTypes::BIGINT;
+    public const FLOAT = DbalTypes::FLOAT;
+    public const TEXT = DbalTypes::TEXT;
+    public const BOOL = DbalTypes::BOOLEAN;
+    public const DATE = DbalTypes::DATE_MUTABLE;
+    public const DATETIME = DbalTypes::DATETIME_MUTABLE;
 
     public static function toPhp(string $type): string {
         switch ($type) {
@@ -32,6 +33,15 @@ class Types
                 return '\\DateTime';
             default:
                 return null;
+        }
+    }
+
+    public static function defaultLength(string $type): int {
+        switch ($type) {
+            case self::STRING:
+                return 255;
+            default:
+                return 0;
         }
     }
 }
