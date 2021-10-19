@@ -13,6 +13,11 @@ class Entity
     protected array $indexes = [];
     /** @var Relation[] */
     protected array $relations = [];
+    public ?string $extends = null;
+    /** @var string[] */
+    public array $implements = [];
+    /** @var string[] */
+    public array $traits = [];
     public bool $noModel = false;
     public bool $isPivot = false;
 
@@ -58,5 +63,9 @@ class Entity
 
     public function hasField(string $name): bool {
         return isset($this->fields[$name]);
+    }
+
+    public function hasRelation(string $name): bool {
+        return isset($this->relations[$name]);
     }
 }

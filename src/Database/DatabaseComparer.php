@@ -117,9 +117,13 @@ class DatabaseComparer
     {
         $tableName = $this->nameConverter->tableName($entity);
 
-        if (!$this->tableExists($tableName)) throw new LogicException("Table $tableName does not exist");
-        $dbIndexes = $this->schemaManager->listTableIndexes($tableName);
-        $foreignKeys = $this->schemaManager->listTableForeignKeys($tableName);
+        if ($this->tableExists($tableName)) {
+            $dbIndexes = $this->schemaManager->listTableIndexes($tableName);
+            $foreignKeys = $this->schemaManager->listTableForeignKeys($tableName);
+        } else {
+            $dbIndexes = [];
+            $foreignKeys = [];
+        }
         $fkNames = array_map(function(ForeignKeyConstraint $fk) { return $fk->getName(); }, $foreignKeys);
         $indexes = $entity->indexes();
 
@@ -171,8 +175,15 @@ class DatabaseComparer
     {
         $tableName = $this->nameConverter->tableName($entity);
 
-        if (!$this->tableExists($tableName)) throw new LogicException("Table $tableName does not exist");
-        $foreignKeys = $this->schemaManager->listTableForeignKeys($tableName);
+        $indexes = [];
+        if ($this->tableExists($tableName)) {
+            $foreignKeys = $this->schemaManager->listTableForeignKeys($tableName);
+            foreach ($entity->indexes() as $index) {
+                $indexes[$index->name] = $index;
+            }
+        } else {
+            $foreignKeys = [];
+        }
 
         /** @var Relation[] $relations */
         $relations = array_filter($entity->relations(), function (Relation $relation) { return $relation->type == Relation::MANY_TO_ONE; });
@@ -187,6 +198,8 @@ class DatabaseComparer
 
             $diff = new RelationDiff();
             $diff->foreignKey = $foreignKey;
+
+            $diff->index = $indexes[$name] ?? null;
 
             if (!$relationName || !isset($relations[$relationName])) {
                 $diff->operation = RelationDiff::OP_REMOVE;

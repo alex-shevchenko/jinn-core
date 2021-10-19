@@ -3,8 +3,11 @@
 namespace Jinn\Definition;
 use Jinn\Definition\Models\Application;
 use Jinn\Definition\Models\Entity;
+use Jinn\Definition\Processors\ApiProcessor;
+use Jinn\Definition\Processors\ClassProcessor;
 use Jinn\Definition\Processors\FieldsProcessor;
 use Jinn\Definition\Processors\IndexesProcessor;
+use Jinn\Definition\Processors\PolicyProcessor;
 use Jinn\Definition\Processors\RelationsPostProcessor;
 use Symfony\Component\Yaml\Yaml;
 use LogicException;
@@ -21,6 +24,8 @@ class DefinitionReader
     {
         $this->processors['fields'] = new FieldsProcessor();
         $this->processors['indexes'] = new IndexesProcessor();
+        $this->processors['api'] = new ApiProcessor();
+        $this->processors['class'] = new ClassProcessor();
 
         $this->postProcessors[] = new RelationsPostProcessor();
     }
@@ -66,15 +71,18 @@ class DefinitionReader
     }
 
     protected function processEntity(Application $application, string $name, array $def): void {
-        $entity = new Entity();
-        $entity->name = $name;
+        if (!$application->hasEntity($name)) {
+            $entity = new Entity();
+            $entity->name = $name;
+            $application->addEntity($entity);
+        }
+        $entity = $application->entity($name);
 
         foreach ($def as $key => $definition) {
             if (!isset($this->processors[$key])) throw new LogicException("No processor found for $key definition");
-            $this->processors[$key]->processDefinition($entity, $definition);
+            $this->processors[$key]->processDefinition($application, $entity, $definition);
         }
 
-        $application->addEntity($entity);
     }
 }
 

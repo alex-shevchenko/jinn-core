@@ -5,12 +5,13 @@ namespace Jinn\Definition\Processors;
 
 
 use Jinn\Definition\DefinitionProcessorInterface;
+use Jinn\Definition\Models\Application;
 use Jinn\Definition\Models\Entity;
 use Jinn\Definition\Models\Index;
 
 class IndexesProcessor implements DefinitionProcessorInterface
 {
-    public function processDefinition(Entity $entity, array $definition)
+    public function processDefinition(Application $application, Entity $entity, $definition)
     {
         foreach ($definition as $indexName => $indexDef) {
             $this->processIndex($entity, $indexName, $indexDef);

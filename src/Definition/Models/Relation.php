@@ -13,8 +13,9 @@ class Relation
     public string $entityName;
     public string $type;
     public ?string $field;
+    public bool $noModel = false;
 
-    public function __construct(Entity $entity = null, $type = null)
+    public function __construct(Entity $entity = null, $type = null, $name = null)
     {
         if ($entity) {
             $this->entity = $entity;
@@ -23,10 +24,13 @@ class Relation
         if ($type) {
             $this->type = $type;
         }
+        if ($name) {
+            $this->name = $name;
+        }
     }
 
     public function field(): string
     {
-        return $this->field ?? ($this->entityName . 'Id');
+        return ($this->field ?? $this->name) . 'Id';
     }
 }

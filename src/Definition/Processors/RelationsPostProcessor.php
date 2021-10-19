@@ -51,14 +51,22 @@ class RelationsPostProcessor implements DefinitionPostProcessorInterface
                         $oneEntity = $entity;
                         $manyEntity = $relatedEntity;
                     } else if ($relation->type == Relation::MANY_TO_ONE) {
-                        $manyEntity = $relatedEntity;
-                        $oneEntity = $entity;
+                        $manyEntity = $entity;
+                        $oneEntity = $relatedEntity;
                     } else {
                         throw new LogicException("Invalid relation type {$relation->type}");
                     }
 
-                    $relationFieldName = $relation->field ?? ($oneEntity->name . 'Id');
+                    $relationName = $relation->field ?? lcfirst($oneEntity->name);
+                    $relationFieldName = $relation->field();
 
+                    if ($relation->type == Relation::ONE_TO_MANY && !$manyEntity->hasRelation($relationName)) {
+                        $reverseRelation = new Relation($oneEntity, Relation::MANY_TO_ONE, $relationName);
+                        $reverseRelation->noModel = true;
+                        $reverseRelation->field = $relation->field;
+                        $manyEntity->addRelation($reverseRelation);
+                        $relationFieldName = $reverseRelation->field();
+                    }
                     if (!$manyEntity->hasField($relationFieldName)) {
                         $relationField = new Field($relationFieldName, Types::BIGINT);
                         $relationField->noModel = true;
