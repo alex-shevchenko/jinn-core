@@ -75,7 +75,7 @@ class DatabaseComparer
             $diff->column = $column;
             $diff->operation = ColumnDiff::OP_CHANGE;
 
-            $fieldType = Type::getType($field->type);
+            $fieldType = Type::getType(Types::toDbalType($field->type));
             if ($column->getType() !== $fieldType) {
                 $result[] = $diff;
                 continue;

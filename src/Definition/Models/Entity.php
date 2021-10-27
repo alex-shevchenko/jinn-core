@@ -40,6 +40,10 @@ class Entity
         $this->relations[$name] = $relation;
     }
 
+    public function index($name): Index {
+        if (!isset($this->indexes[$name])) throw new InvalidArgumentException("Index $name does not exists in entity {$this->name}");
+        return $this->indexes[$name];
+    }
     /**
      * @return Index[]
      */
@@ -47,6 +51,10 @@ class Entity
         return $this->indexes;
     }
 
+    public function field($name): Field {
+        if (!isset($this->fields[$name])) throw new InvalidArgumentException("Field $name does not exists in entity {$this->name}");
+        return $this->fields[$name];
+    }
     /**
      * @return Field[]
      */
@@ -59,6 +67,10 @@ class Entity
      */
     public function relations(): array {
         return $this->relations;
+    }
+
+    public function hasIndex(string $name): bool {
+        return isset($this->indexes[$name]);
     }
 
     public function hasField(string $name): bool {

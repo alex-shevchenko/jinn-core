@@ -15,7 +15,7 @@ class ApiMethod
     public ?array $fields = null;
     public ?Policy $policy = null;
     public ?string $relation = null;
-    public ?string $route = null;
+    public $route = null;
 
     public function __construct(string $name, string $type = null)
     {

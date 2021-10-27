@@ -69,6 +69,7 @@ class RelationsPostProcessor implements DefinitionPostProcessorInterface
                     }
                     if (!$manyEntity->hasField($relationFieldName)) {
                         $relationField = new Field($relationFieldName, Types::BIGINT);
+                        $relationField->required = false;
                         $relationField->noModel = true;
                         $manyEntity->addField($relationField);
                     }
