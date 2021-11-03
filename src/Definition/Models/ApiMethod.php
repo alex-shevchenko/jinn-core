@@ -10,6 +10,7 @@ class ApiMethod
     public const UPDATE = 'update';
     public const DELETE = 'delete';
 
+    public bool $authRequired = false;
     public string $name;
     public string $type;
     public ?array $fields = null;

@@ -36,6 +36,8 @@ class ApiProcessor implements DefinitionProcessorInterface
 
                     $method->relation = $methodDefinition['relation'] ?? null;
 
+                    $method->authRequired = $methodDefinition['auth'] ?? false;
+
                     $method->route = $methodDefinition['route'] ?? null;
 
                     if (isset($methodDefinition['policy'])) {
