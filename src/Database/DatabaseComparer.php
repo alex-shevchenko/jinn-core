@@ -64,14 +64,16 @@ class DatabaseComparer
 
             $diff = new ColumnDiff($field);
 
-            if (!isset($columns[$columnName]))
+            $column = $columns[$columnName] ?? null;
+            if (!$column) $column = $columns["`$columnName`"] ?? null;
+            if (!$column)
             {
                 $result[] = $diff;
                 continue;
             }
 
-            $column = $columns[$columnName];
             unset($columns[$columnName]);
+            unset($columns["`$columnName`"]);
             $diff->column = $column;
             $diff->operation = ColumnDiff::OP_CHANGE;
 
