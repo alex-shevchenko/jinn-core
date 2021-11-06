@@ -9,6 +9,8 @@ use Jinn\Definition\Processors\FieldsProcessor;
 use Jinn\Definition\Processors\IndexesProcessor;
 use Jinn\Definition\Processors\PolicyProcessor;
 use Jinn\Definition\Processors\RelationsPostProcessor;
+use Jinn\Definition\Processors\ViewProcessor;
+use Jinn\Definition\Processors\ViewsPostProcessor;
 use Symfony\Component\Yaml\Yaml;
 use LogicException;
 use InvalidArgumentException;
@@ -24,10 +26,12 @@ class DefinitionReader
     {
         $this->processors['fields'] = new FieldsProcessor();
         $this->processors['indexes'] = new IndexesProcessor();
+        $this->processors['views'] = new ViewProcessor();
         $this->processors['api'] = new ApiProcessor();
         $this->processors['class'] = new ClassProcessor();
 
         $this->postProcessors[] = new RelationsPostProcessor();
+        $this->postProcessors[] = new ViewsPostProcessor();
     }
 
     public function read(string $file): Application {

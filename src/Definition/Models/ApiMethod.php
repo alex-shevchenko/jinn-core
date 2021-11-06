@@ -13,15 +13,17 @@ class ApiMethod
     public bool $authRequired = false;
     public string $name;
     public string $type;
-    public ?array $fields = null;
+    public ?string $viewName = null;
+    public ?View $view = null;
     public ?Policy $policy = null;
     public ?string $relation = null;
     public $route = null;
 
-    public function __construct(string $name, string $type = null)
+    public function __construct(string $name, string $type = null, $view = null)
     {
         if ($type == null) $type = $name;
         $this->name = $name;
         $this->type = $type;
+        $this->view = $view;
     }
 }

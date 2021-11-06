@@ -10,19 +10,10 @@ class ApiController
     public Entity $entity;
     /** @var ApiMethod[] */
     protected array $methods = [];
-    private array $allFields;
 
     public function __construct(Entity $entity)
     {
         $this->entity = $entity;
-        $this->allFields = [];
-
-        foreach ($entity->fields() as $field) {
-            if (!$field->noModel) $this->allFields[] = $field->name;
-        }
-        foreach ($entity->relations() as $relation) {
-            $this->allFields[] = $relation->name;
-        }
     }
 
     public function name(): string {
@@ -33,8 +24,6 @@ class ApiController
         $name = $method->name;
         if (isset($this->methods[$name])) throw new InvalidArgumentException("Method $name already exists in controller {$this->name()}");
         $this->methods[$name] = $method;
-
-        if (!$method->fields) $method->fields = $this->allFields;
     }
 
     public function hasMethods(): bool {

@@ -13,6 +13,8 @@ class Entity
     protected array $indexes = [];
     /** @var Relation[] */
     protected array $relations = [];
+    /** @var View[] */
+    protected array $views = [];
     public ?string $extends = null;
     /** @var string[] */
     public array $implements = [];
@@ -38,6 +40,12 @@ class Entity
         $name = $relation->name;
         if (isset($this->fields[$name]) || isset($this->relations[$name])) throw new InvalidArgumentException("Field or relation $name already exists in entity {$this->name}");
         $this->relations[$name] = $relation;
+    }
+
+    public function addView(View $view): void {
+        $name = $view->name;
+        if (isset($this->views[$name])) throw new InvalidArgumentException("View $name already exists in entity {$this->name}");
+        $this->views[$name] = $view;
     }
 
     public function index($name): Index {
@@ -67,6 +75,15 @@ class Entity
      */
     public function relations(): array {
         return $this->relations;
+    }
+
+    public function view($name): View {
+        if (!isset($this->views[$name])) throw new InvalidArgumentException("View $name does not exists in entity {$this->name}");
+        return $this->views[$name];
+    }
+
+    public function views(): array {
+        return $this->views;
     }
 
     public function hasIndex(string $name): bool {
