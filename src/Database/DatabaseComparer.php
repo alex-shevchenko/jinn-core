@@ -94,7 +94,9 @@ class DatabaseComparer
                 continue;
             }
 
-            if ($field->default !== $column->getDefault()) {
+            if (($field->default != $column->getDefault()) ||
+              (is_null($field->default) && !is_null($column->getDefault())) ||
+              (!is_null($field->default) && is_null($column->getDefault()))) {
                 $result[] = $diff;
                 continue;
             }

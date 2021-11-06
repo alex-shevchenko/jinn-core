@@ -70,6 +70,19 @@ class Entity
         return $this->fields;
     }
 
+    public function allFields(): array {
+        $allFields = [];
+        foreach ($this->fields as $field) {
+            if (!$field->noModel) $allFields[] = $field->name;
+        }
+        return $allFields;
+    }
+
+    public function relation($name): Relation {
+        if (!isset($this->relations[$name])) throw new InvalidArgumentException("Relation $name does not exists in entity {$this->name}");
+        return $this->relations[$name];
+    }
+
     /**
      * @return Relation[]
      */

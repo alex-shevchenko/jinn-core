@@ -22,7 +22,9 @@ class ViewProcessor implements DefinitionProcessorInterface
             foreach ($definition as $name => $viewDefinition) {
                 $view = new View($entity->name, $name);
 
-                if (isset($viewDefinition[0])) {
+                if (is_null($viewDefinition)) {
+                    $view->fields = $entity->allFields();
+                } elseif (isset($viewDefinition[0])) {
                     $view->fields = $viewDefinition;
                 } else {
                     if (!isset($viewDefinition['extends'])) throw new \InvalidArgumentException("View $name must either define list of fields or extend another view");

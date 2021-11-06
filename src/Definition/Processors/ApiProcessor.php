@@ -20,11 +20,6 @@ class ApiProcessor implements DefinitionProcessorInterface
     {
         $apiController = new ApiController($entity);
 
-        $allFields = [];
-        foreach ($entity->fields() as $field) {
-            if (!$field->noModel) $allFields[] = $field->name;
-        }
-
         if (is_null($definition)) {
             $apiController->fillDefault();
         } else {
@@ -33,14 +28,16 @@ class ApiProcessor implements DefinitionProcessorInterface
                     if (!$apiController->hasMethods()) $apiController->fillDefault();
                     $apiController->removeMethod($name);
                 } elseif (is_null($methodDefinition)) {
-                    $apiController->addMethod(new ApiMethod($name, null, new View($entity->name, $name, $allFields)));
+                    $apiController->addMethod(new ApiMethod($name, null, new View($entity->name, $name, $entity->allFields())));
                 } elseif (is_string($methodDefinition)) {
-                    $apiController->addMethod(new ApiMethod($name, $methodDefinition, new View($entity->name, $name, $allFields)));
+                    $apiController->addMethod(new ApiMethod($name, $methodDefinition, new View($entity->name, $name, $entity->allFields())));
                 } else {
                     $method = new ApiMethod($name, $methodDefinition['type'] ?? $name);
 
                     if (isset($methodDefinition['fields']) && isset($methodDefinition['view']))
                         throw new LogicException("Api method $name cannot have both view and fields defined");
+
+                    $method->relation = $methodDefinition['relation'] ?? null;
 
                     if (isset($methodDefinition['view'])) {
                         if (strpos($methodDefinition['view'], '.') !== false) {
@@ -49,12 +46,11 @@ class ApiProcessor implements DefinitionProcessorInterface
                             $method->view = $entity->view($methodDefinition['view']);
                         }
                     } else {
-                        $method->view = new View($entity->name, $name, $methodDefinition['fields'] ?? $allFields);
+                        if ($method->relation && !isset($methodDefinition['fields'])) throw new \InvalidArgumentException("View or fields must be defined for the relation method $name");
+                        $method->view = new View($entity->name, $name, $methodDefinition['fields'] ?? $entity->allFields());
                     }
 
                     $apiController->addMethod($method);
-
-                    $method->relation = $methodDefinition['relation'] ?? null;
 
                     $method->authRequired = $methodDefinition['auth'] ?? false;
 
