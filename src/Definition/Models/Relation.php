@@ -33,7 +33,7 @@ class Relation
     {
         $name = $this->field;
         if (!$name && $this->type == Relation::ONE_TO_MANY)
-            $name = $this->entityName;
+            $name = $this->entity->name;
         else
             $name = $this->name;
         return $name . 'Id';
