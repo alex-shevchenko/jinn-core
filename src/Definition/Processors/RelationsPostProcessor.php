@@ -58,7 +58,7 @@ class RelationsPostProcessor implements DefinitionPostProcessorInterface
                     }
 
                     $relationName = $relation->field ?? lcfirst($oneEntity->name);
-                    $relationFieldName = $relation->field();
+                    $relationFieldName = $relationName . 'Id';
 
                     if ($relation->type == Relation::ONE_TO_MANY && !$manyEntity->hasRelation($relationName)) {
                         $reverseRelation = new Relation($oneEntity, Relation::MANY_TO_ONE, $relationName);

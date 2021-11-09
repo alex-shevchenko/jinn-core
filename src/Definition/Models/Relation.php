@@ -31,11 +31,6 @@ class Relation
 
     public function field(): string
     {
-        $name = $this->field;
-        if (!$name && $this->type == Relation::ONE_TO_MANY)
-            $name = $this->entity->name;
-        else
-            $name = $this->name;
-        return $name . 'Id';
+        return ($this->field ?? $this->name) . 'Id';
     }
 }
