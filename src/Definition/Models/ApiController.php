@@ -41,11 +41,15 @@ class ApiController
         return $this->methods;
     }
 
+    private function addDefault($method) {
+        $this->addMethod(new ApiMethod($method, null, new View($this->entity->name, $method, $this->entity->allFields())));
+    }
+
     public function fillDefault(): void {
-        $this->addMethod(new ApiMethod(ApiMethod::LIST));
-        $this->addMethod(new ApiMethod(ApiMethod::GET));
-        $this->addMethod(new ApiMethod(ApiMethod::CREATE));
-        $this->addMethod(new ApiMethod(ApiMethod::UPDATE));
-        $this->addMethod(new ApiMethod(ApiMethod::DELETE));
+        $this->addDefault(ApiMethod::LIST);
+        $this->addDefault(ApiMethod::GET);
+        $this->addDefault(ApiMethod::CREATE);
+        $this->addDefault(ApiMethod::UPDATE);
+        $this->addDefault(ApiMethod::DELETE);
     }
 }
