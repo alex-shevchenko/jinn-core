@@ -9,11 +9,8 @@ use Jinn\Definition\Models\Application;
 use Jinn\Definition\Models\Entity;
 use Jinn\Definition\Models\View;
 
-abstract class AbstractModelGenerator
+abstract class AbstractEntityGenerator
 {
-    /**
-     * @param Entity[] $entities
-     */
     public function generate(Application $application): void {
         $entities = $application->entities();
 

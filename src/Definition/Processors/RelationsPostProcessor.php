@@ -35,18 +35,18 @@ class RelationsPostProcessor implements DefinitionPostProcessorInterface
                         $pivotEntity = new Entity();
                         $pivotEntity->name = $pivotEntityName;
                         $application->addEntity($pivotEntity);
+                        $pivotEntity->noModel = true;
                     } else {
                         $pivotEntity = $application->entity($pivotEntityName);
                     }
 
-                    $fromFieldName = $entity->name . 'Id';
-                    $toFieldName = $relatedEntity->name . 'Id';
+                    $fromFieldName = lcfirst($entity->name) . 'Id';
+                    $toFieldName = lcfirst($relatedEntity->name) . 'Id';
                     $pivotEntity->addField(new Field($fromFieldName, Types::BIGINT));
                     $pivotEntity->addField(new Field($toFieldName, Types::BIGINT));
                     $pivotEntity->addIndex(new Index($pivotEntityName, [$fromFieldName, $toFieldName], true));
                     $pivotEntity->addRelation(new Relation($entity, Relation::MANY_TO_ONE));
                     $pivotEntity->addRelation(new Relation($relatedEntity, Relation::MANY_TO_ONE));
-                    $pivotEntity->noModel = true;
                     $pivotEntity->isPivot = true;
                 } else {
                     if ($relation->type == Relation::ONE_TO_MANY) {

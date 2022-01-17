@@ -12,14 +12,15 @@ class Relation
     public Entity $entity;
     public string $entityName;
     public string $type;
-    public ?string $field;
+    public ?string $field = null;
     public bool $noModel = false;
 
     public function __construct(Entity $entity = null, $type = null, $name = null)
     {
         if ($entity) {
             $this->entity = $entity;
-            $this->name = $this->entityName = $entity->name;
+            $this->entityName = $entity->name;
+            $this->name = lcfirst($this->entityName);
         }
         if ($type) {
             $this->type = $type;

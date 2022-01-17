@@ -7,7 +7,6 @@ use Jinn\Definition\Processors\ApiProcessor;
 use Jinn\Definition\Processors\ClassProcessor;
 use Jinn\Definition\Processors\FieldsProcessor;
 use Jinn\Definition\Processors\IndexesProcessor;
-use Jinn\Definition\Processors\PolicyProcessor;
 use Jinn\Definition\Processors\RelationsPostProcessor;
 use Jinn\Definition\Processors\ViewProcessor;
 use Jinn\Definition\Processors\ViewsPostProcessor;
