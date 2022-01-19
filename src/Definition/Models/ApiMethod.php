@@ -9,6 +9,7 @@ class ApiMethod
     public const CREATE = 'create';
     public const UPDATE = 'update';
     public const DELETE = 'delete';
+    public const RELATED_LIST = 'relatedList';
 
     public bool $authRequired = false;
     public string $name;
