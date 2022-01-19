@@ -61,6 +61,7 @@ class ApiProcessor implements DefinitionProcessorInterface
 
                         $policy = new Policy($name);
                         $policy->owner = $rules['owner'] ?? null;
+                        $policy->anonymous = $rules['anonymous'] ?? false;
                         if (isset($rules['role'])) $policy->roles = [$rules['role']];
                         else if (isset($rules['roles'])) $policy->roles = $rules['roles'];
 
