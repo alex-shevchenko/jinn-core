@@ -34,25 +34,19 @@ class ApiProcessor implements DefinitionProcessorInterface
                 } else {
                     $method = new ApiMethod($name, $methodDefinition['type'] ?? $name);
 
-                    if (isset($methodDefinition['fields']) && isset($methodDefinition['view']))
-                        throw new LogicException("Api method $name cannot have both view and fields defined");
+                    if (isset($methodDefinition['properties']) && isset($methodDefinition['view']))
+                        throw new LogicException("Api method $name cannot have both view and properties defined");
 
-                    $method->relation = $methodDefinition['relation'] ?? null;
-
-                    if (isset($methodDefinition['view'])) {
-                        if (strpos($methodDefinition['view'], '.') !== false) {
-                            $method->viewName = $methodDefinition['view'];
-                        } else {
-                            $method->view = $entity->view($methodDefinition['view']);
-                        }
-                    } else {
-                        if ($method->relation && !isset($methodDefinition['fields'])) throw new \InvalidArgumentException("View or fields must be defined for the relation method $name");
-                        $method->view = new View($entity->name, $name, $methodDefinition['fields'] ?? $entity->allFields());
+                    if ($method->type == ApiMethod::RELATED_LIST) {
+                        $method->relation = $methodDefinition['relation'] ?? $name;
                     }
+
+                    $method->viewName = $methodDefinition['view'] ?? null;
+                    $method->properties = $methodDefinition['properties'] ?? null;
 
                     $apiController->addMethod($method);
 
-                    $method->authRequired = $methodDefinition['auth'] ?? false;
+                    $method->auth = $methodDefinition['auth'] ?? false;
 
                     $method->route = $methodDefinition['route'] ?? null;
 
@@ -61,7 +55,6 @@ class ApiProcessor implements DefinitionProcessorInterface
 
                         $policy = new Policy($name);
                         $policy->owner = $rules['owner'] ?? null;
-                        $policy->anonymous = $rules['anonymous'] ?? false;
                         if (isset($rules['role'])) $policy->roles = [$rules['role']];
                         else if (isset($rules['roles'])) $policy->roles = $rules['roles'];
 

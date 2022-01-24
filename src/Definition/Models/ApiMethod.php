@@ -11,10 +11,11 @@ class ApiMethod
     public const DELETE = 'delete';
     public const RELATED_LIST = 'relatedList';
 
-    public bool $authRequired = false;
+    public bool $auth = false;
     public string $name;
     public string $type;
     public ?string $viewName = null;
+    public ?array $properties = null;
     public ?View $view = null;
     public ?Policy $policy = null;
     public ?string $relation = null;

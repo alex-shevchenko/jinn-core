@@ -5,13 +5,9 @@ namespace Jinn\Definition\Processors;
 
 
 use Jinn\Definition\DefinitionPostProcessorInterface;
+use Jinn\Definition\Models\ApiMethod;
 use Jinn\Definition\Models\Application;
-use Jinn\Definition\Models\Entity;
-use Jinn\Definition\Models\Field;
-use Jinn\Definition\Models\Index;
-use Jinn\Definition\Models\Relation;
-use Jinn\Definition\Types;
-use LogicException;
+use Jinn\Definition\Models\View;
 
 class ViewsPostProcessor implements DefinitionPostProcessorInterface
 {
@@ -20,9 +16,15 @@ class ViewsPostProcessor implements DefinitionPostProcessorInterface
         $apiControllers = $application->apiControllers();
         foreach ($apiControllers as $controller) {
             foreach ($controller->methods() as $method) {
-                if (!$method->view && $method->viewName) {
-                    list($entityName, $viewName) = explode('.', $method->viewName);
-                    $method->view = $application->entity($entityName)->view($viewName);
+                if ($method->type == ApiMethod::RELATED_LIST) {
+                    $entity = $controller->entity->relation($method->relation)->entity;
+                } else {
+                    $entity = $controller->entity;
+                }
+                if ($method->viewName) {
+                    $method->view = $entity->view($method->viewName);
+                } else {
+                    $method->view = new View($entity->name, $method->name, $method->properties ?? $entity->allFields());
                 }
             }
         }
