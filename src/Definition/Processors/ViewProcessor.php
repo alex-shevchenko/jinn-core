@@ -5,14 +5,10 @@ namespace Jinn\Definition\Processors;
 
 
 use Jinn\Definition\DefinitionProcessorInterface;
-use Jinn\Definition\Models\ApiController;
-use Jinn\Definition\Models\ApiMethod;
 use Jinn\Definition\Models\Application;
 use Jinn\Definition\Models\Entity;
-use Jinn\Definition\Models\Index;
-use Jinn\Definition\Models\Policy;
 use Jinn\Definition\Models\View;
-use LogicException;
+use InvalidArgumentException;
 
 class ViewProcessor implements DefinitionProcessorInterface
 {
@@ -27,7 +23,7 @@ class ViewProcessor implements DefinitionProcessorInterface
                 } elseif (isset($viewDefinition[0])) {
                     $view->fields = $viewDefinition;
                 } else {
-                    if (!isset($viewDefinition['extends'])) throw new \InvalidArgumentException("View $name must either define list of fields or extend another view");
+                    if (!isset($viewDefinition['extends'])) throw new InvalidArgumentException("View $name must either define list of fields or extend another view");
 
                     $extends = $viewDefinition['extends'];
                     $fields = $entity->view($extends)->fields;

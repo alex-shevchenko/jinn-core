@@ -6,7 +6,6 @@ use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\ForeignKeyConstraint;
-use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Types\Type;
 use Jinn\Database\Models\ColumnDiff;
 use Jinn\Database\Models\IndexDiff;

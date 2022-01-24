@@ -13,8 +13,8 @@ class GeneratorFactory
     /**
      * @var ClassGenerator[]
      */
-    private static $generators = [];
-    private static $namespace;
+    private static array $generators = [];
+    private static string $namespace;
 
     public function __construct(GeneratorConfig $config)
     {

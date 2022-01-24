@@ -4,7 +4,6 @@
 namespace Jinn\Generator;
 
 
-use Jinn\Definition\Models\ApiController;
 use Jinn\Definition\Models\Application;
 use Jinn\Definition\Models\Entity;
 use Jinn\Definition\Models\View;

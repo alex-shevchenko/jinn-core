@@ -9,7 +9,6 @@ use Jinn\Definition\Models\ApiController;
 use Jinn\Definition\Models\ApiMethod;
 use Jinn\Definition\Models\Application;
 use Jinn\Definition\Models\Entity;
-use Jinn\Definition\Models\Index;
 use Jinn\Definition\Models\Policy;
 use Jinn\Definition\Models\View;
 use LogicException;

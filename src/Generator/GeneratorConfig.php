@@ -15,4 +15,9 @@ class GeneratorConfig
     public string $viewNamespace;
 
     public string $migrationsPath;
+
+    /**
+     * @var callable
+     */
+    public $output;
 }
