@@ -11,7 +11,7 @@ use Jinn\Definition\Models\View;
 
 abstract class AbstractEntityGenerator
 {
-    public function generate(Application $application): void {
+    public function generate(Application $application, $generateMigrations = true): void {
         $entities = $application->entities();
 
         foreach ($entities as $entity) {
@@ -20,7 +20,9 @@ abstract class AbstractEntityGenerator
                 $this->generateViews($entity);
             }
         }
-        $this->generateMigrations($entities);
+
+        if ($generateMigrations)
+            $this->generateMigrations($entities);
 
         $this->generateApiControllers($application);
     }
