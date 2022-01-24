@@ -13,7 +13,7 @@ use Jinn\Definition\Models\Relation;
 use Jinn\Definition\Types;
 use LogicException;
 
-class FieldsProcessor implements DefinitionProcessorInterface
+class PropertiesProcessor implements DefinitionProcessorInterface
 {
     public function processDefinition(Application $application, Entity $entity, $definition)
     {
@@ -71,7 +71,7 @@ class FieldsProcessor implements DefinitionProcessorInterface
                 if (!isset($relationDef['entity']) || !isset($relationDef['relation'])) throw new LogicException("Relation $fieldName of entity {$entity->name} must have a related entity and type");
                 $relation->entityName = $relationDef['entity'];
                 $relation->type = $relationDef['relation'];
-                $relation->field = $relationDef['field'] ?? null;
+                $relation->via = $relationDef['via'] ?? null;
 
                 $entity->addRelation($relation);
             } else {

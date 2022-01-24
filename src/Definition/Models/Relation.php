@@ -12,7 +12,7 @@ class Relation
     public Entity $entity;
     public string $entityName;
     public string $type;
-    public ?string $field = null;
+    public ?string $via = null;
     public bool $noModel = false;
 
     public function __construct(Entity $entity = null, $type = null, $name = null)
@@ -32,6 +32,6 @@ class Relation
 
     public function field(): string
     {
-        return ($this->field ?? $this->name) . 'Id';
+        return ($this->via ?? $this->name) . 'Id';
     }
 }

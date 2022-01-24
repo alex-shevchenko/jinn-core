@@ -5,7 +5,7 @@ use Jinn\Definition\Models\Application;
 use Jinn\Definition\Models\Entity;
 use Jinn\Definition\Processors\ApiProcessor;
 use Jinn\Definition\Processors\ClassProcessor;
-use Jinn\Definition\Processors\FieldsProcessor;
+use Jinn\Definition\Processors\PropertiesProcessor;
 use Jinn\Definition\Processors\IndexesProcessor;
 use Jinn\Definition\Processors\RelationsPostProcessor;
 use Jinn\Definition\Processors\ViewProcessor;
@@ -23,7 +23,7 @@ class DefinitionReader
 
     public function __construct()
     {
-        $this->processors['fields'] = new FieldsProcessor();
+        $this->processors['properties'] = new PropertiesProcessor();
         $this->processors['indexes'] = new IndexesProcessor();
         $this->processors['views'] = new ViewProcessor();
         $this->processors['api'] = new ApiProcessor();

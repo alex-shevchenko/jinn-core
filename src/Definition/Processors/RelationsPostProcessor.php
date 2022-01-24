@@ -24,7 +24,7 @@ class RelationsPostProcessor implements DefinitionPostProcessorInterface
                 $relation->entity = $relatedEntity;
 
                 if ($relation->type == Relation::MANY_TO_MANY) {
-                    $pivotEntityName = $relation->field;
+                    $pivotEntityName = $relation->via;
                     if (!$pivotEntityName) {
                         $names = [$entity->name, $relatedEntity->name];
                         sort($names);
@@ -59,13 +59,13 @@ class RelationsPostProcessor implements DefinitionPostProcessorInterface
                         throw new LogicException("Invalid relation type {$relation->type}");
                     }
 
-                    $relationName = $relation->field ?? lcfirst($oneEntity->name);
+                    $relationName = $relation->via ?? lcfirst($oneEntity->name);
                     $relationFieldName = $relation->field();
 
                     if ($relation->type == Relation::ONE_TO_MANY && !$manyEntity->hasRelation($relationName)) {
                         $reverseRelation = new Relation($oneEntity, Relation::MANY_TO_ONE, $relationName);
                         $reverseRelation->noModel = true;
-                        $reverseRelation->field = $relation->field;
+                        $reverseRelation->via = $relation->via;
                         $manyEntity->addRelation($reverseRelation);
                         $relationFieldName = $reverseRelation->field();
                     }
