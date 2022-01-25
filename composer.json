@@ -1,6 +1,9 @@
 {
-    "name": "jinn/jinn-core",
+    "name": "jinn/core",
     "type": "library",
+    "description": "Framework-agnostic core of the Jinn code generator",
+    "keywords": ["jinn", "generator"],
+    "homepage": "https://jinncode.dev/",
     "license": "MIT",
     "authors": [
         {
