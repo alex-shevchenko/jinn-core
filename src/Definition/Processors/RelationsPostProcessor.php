@@ -62,11 +62,15 @@ class RelationsPostProcessor implements DefinitionPostProcessorInterface
                     $relationName = $relation->via ?? lcfirst($oneEntity->name);
                     $relationFieldName = $relation->field();
 
-                    if ($relation->type == Relation::ONE_TO_MANY && !$manyEntity->hasRelation($relationName)) {
-                        $reverseRelation = new Relation($oneEntity, Relation::MANY_TO_ONE, $relationName);
-                        $reverseRelation->noModel = true;
-                        $reverseRelation->via = $relation->via;
-                        $manyEntity->addRelation($reverseRelation);
+                    if ($relation->type == Relation::ONE_TO_MANY) {
+                        if (!$manyEntity->hasRelation($relationName)) {
+                            $reverseRelation = new Relation($oneEntity, Relation::MANY_TO_ONE, $relationName);
+                            $reverseRelation->noModel = true;
+                            $reverseRelation->via = $relation->via;
+                            $manyEntity->addRelation($reverseRelation);
+                        } else {
+                            $reverseRelation = $manyEntity->relation($relationName);
+                        }
                         $relationFieldName = $reverseRelation->field();
                     }
                     if (!$manyEntity->hasField($relationFieldName)) {
