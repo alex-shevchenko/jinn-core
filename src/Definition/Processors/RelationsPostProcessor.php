@@ -41,12 +41,19 @@ class RelationsPostProcessor implements DefinitionPostProcessorInterface
                     }
 
                     $fromFieldName = lcfirst($entity->name) . 'Id';
+                    if (!$pivotEntity->hasField($fromFieldName)) {
+                        $pivotEntity->addField(new Field($fromFieldName, Types::BIGINT));
+                        $pivotEntity->addRelation(new Relation($entity, Relation::MANY_TO_ONE));
+                    }
                     $toFieldName = lcfirst($relatedEntity->name) . 'Id';
-                    $pivotEntity->addField(new Field($fromFieldName, Types::BIGINT));
-                    $pivotEntity->addField(new Field($toFieldName, Types::BIGINT));
-                    $pivotEntity->addIndex(new Index($pivotEntityName, [$fromFieldName, $toFieldName], true));
-                    $pivotEntity->addRelation(new Relation($entity, Relation::MANY_TO_ONE));
-                    $pivotEntity->addRelation(new Relation($relatedEntity, Relation::MANY_TO_ONE));
+                    if (!$pivotEntity->hasField($toFieldName)) {
+                        $pivotEntity->addField(new Field($toFieldName, Types::BIGINT));
+                        $pivotEntity->addRelation(new Relation($relatedEntity, Relation::MANY_TO_ONE));
+                    }
+                    if (!$pivotEntity->hasIndex($pivotEntityName)) {
+                        $pivotEntity->addIndex(new Index($pivotEntityName, [$fromFieldName, $toFieldName], true));
+                    }
+
                     $pivotEntity->isPivot = true;
                 } else {
                     if ($relation->type == Relation::ONE_TO_MANY) {
