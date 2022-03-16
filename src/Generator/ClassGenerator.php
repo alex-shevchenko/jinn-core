@@ -5,6 +5,7 @@ namespace Jinn\Generator;
 
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\PhpFile;
+use Symfony\Component\Mime\Exception\LogicException;
 
 abstract class ClassGenerator
 {
@@ -31,7 +32,8 @@ abstract class ClassGenerator
     }
 
     private function nameToPath($baseFolder, $baseNamespace, $name) {
-        $name = str_replace($baseNamespace, $baseFolder, $name);
+        if (strpos($name, $baseNamespace . '\\') !== 0) throw new \LogicException("Base namespace '$baseNamespace' not found in class name '$name'");
+        $name = $baseFolder . substr($name, strlen($baseNamespace));
         return str_replace('\\', '/', $name) . '.php';
     }
 
