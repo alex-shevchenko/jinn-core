@@ -13,6 +13,7 @@ class Types
     public const BIGINT = DbalTypes::BIGINT;
     public const FLOAT = DbalTypes::FLOAT;
     public const TEXT = DbalTypes::TEXT;
+    public const JSON = DbalTypes::JSON;
     public const BOOL = DbalTypes::BOOLEAN;
     public const DATE = DbalTypes::DATE_MUTABLE;
     public const DATETIME = DbalTypes::DATETIME_MUTABLE;
@@ -26,7 +27,7 @@ class Types
         }
     }
 
-    public static function toPhp(string $type): string {
+    public static function toPhp(string $type): ?string {
         switch ($type) {
             case self::EMAIL:
             case self::STRING:
